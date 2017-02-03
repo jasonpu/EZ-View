@@ -23,6 +23,9 @@ rm('-rf', assetsPath)
 mkdir('-p', assetsPath)
 cp('-R', 'static/*', assetsPath)
 
+// Copy manifest.json for Chrome extension
+cp('manifest.json', config.build.assetsRoot)
+
 webpack(webpackConfig, function (err, stats) {
   spinner.stop()
   if (err) throw err
