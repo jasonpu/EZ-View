@@ -56,8 +56,7 @@ export default {
           self.url = url
         })
       } else if (window.safari && window.safari.application) {
-
-        self.url = safari.application.activeBrowserWindow.activeTab.url
+        self.url = window.safari.application.activeBrowserWindow.activeTab.url
       } else {
         // use dummy for easy dev
         this.url = 'https://www.nytimes.com/2017/02/02/world/middleeast/iran-missile-test-trump.html'
