@@ -2,12 +2,12 @@
   <div class="fyi-article">
     <div class="row" v-if="data">
       <div class="col col-4">
-        <a :href="data.url">
+        <a :href="data.url" target="_blank">
           <img v-if="data.lead_image_url" :src="data.lead_image_url" alt="">
         </a>
       </div>
       <div class="col col-8">
-        <a :href="data.url">
+        <a :href="data.url" target="_blank">
           <h1>{{ data.title }}</h1>
         </a>
         <h2>
