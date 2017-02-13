@@ -14,6 +14,14 @@
           {{ data.excerpt }}
         </h2>
       </div>
+      <div class="col col-7">
+      </div>
+      <div class="col col-5">
+        <button v-on:click="bookmark"><img src="~assets/bookmark.svg"></button>
+        <button v-on:click="facebook"><img src="~assets/facebook.svg"></button>
+        <button v-on:click="twitter"><img src="~assets/twitter.svg"></button>
+        <button v-on:click="more"><img src="~assets/more.svg"></button>
+      </div>
     </div>
   </div>
 </template>
@@ -76,6 +84,18 @@ export default {
           console.log(error)
         })
       }
+    },
+    bookmark () {
+      // add url to local bookmark storage
+    },
+    facebook () {
+      // share to facebook
+    },
+    twitter () {
+      // share to twitter
+    },
+    more () {
+      // view more
     }
   }
 }
@@ -112,5 +132,17 @@ h2 {
 }
 a {
   color: #42b983;
+}
+
+button {
+  border: none;
+  width: 2em;
+  padding: 0em;
+  background: #fff;
+  margin-right: 0.5em;
+  cursor: pointer;
+}
+button:last-child {
+  margin-right: 0;
 }
 </style>
