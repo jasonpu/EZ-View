@@ -7,23 +7,22 @@
       <fyi-nav></fyi-nav>
     </div>
     <div class="container-fluid">
-      <fyi-article></fyi-article>
+      <fyi-cards></fyi-cards>
     </div>
   </div>
 </template>
 
 <script>
-// import Config from './components/Hello'
 import FyiConfig from './components/FyiConfig'
 import FyiNav from './components/FyiNav'
-import FyiArticle from './components/FyiArticle'
+import FyiCards from './components/FyiCards'
 
 export default {
   name: 'app',
   components: {
     FyiConfig,
     FyiNav,
-    FyiArticle
+    FyiCards
   }
 }
 </script>
