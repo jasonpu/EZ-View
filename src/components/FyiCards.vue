@@ -1,7 +1,7 @@
 <template>
   <div class="fyi-cards">
     <div class="fyi-card" v-for="item in items">
-      <fyi-message :message="item.message" v-if=" item.type == 'message' "></fyi-message>
+      <fyi-error :message="item.message" v-if=" item.type == 'error' "></fyi-error>
       <fyi-article :data="item.data" v-else-if=" item.type == 'article' && item.data "></fyi-article>
     </div>
   </div>
@@ -9,13 +9,13 @@
 
 <script>
 import axios from 'axios'
-import FyiMessage from './FyiMessage'
+import FyiError from './FyiError'
 import FyiArticle from './FyiArticle'
 
 export default {
   name: 'fyi-cards',
   components: {
-    FyiMessage,
+    FyiError,
     FyiArticle
   },
   data () {
@@ -28,7 +28,7 @@ export default {
       this.fetchData(url, function (data) {
         if (data == null || data.error) {
           this.items.push({
-            type: 'message',
+            type: 'error',
             message: 'Sorry, we cannot load content from this page.'
           })
         } else {
