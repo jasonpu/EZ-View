@@ -23,6 +23,7 @@ export default {
   },
   data () {
     return {
+      urls: [],
       items: []
     }
   },
@@ -66,7 +67,8 @@ export default {
     },
     fetchData (url, callback) {
       var self = this
-      if (!this.data) {
+      if (this.urls.indexOf(url) < 0) {
+        this.urls.push(url)
         axios.get('https://mercury.postlight.com/parser?url=' + url, {
           headers: {
             'x-api-key': '8CwzdCirC38J5RgE4gVQGym2YFxEVgn92nIHjxnd'
@@ -90,17 +92,24 @@ export default {
         var url = new window.URL(anchors[i].href, data.url)
         if (/^https?:$/.test(url.protocol)) {
           url.hash = ''
-          if (url.href !== data.url) {
-            this.fetchData(url.href, function (data) {
-              this.parseData(data)
-            })
-          }
+          this.fetchData(url.href, function (data) {
+            this.parseData(data)
+          })
         }
       }
     },
+    isFetched (url) {
+      for (var i = 0; i < this.items.length; ++i) {
+        if (this.items[i].data.url === url) {
+          return true
+        }
+      }
+      return false
+    },
     parseData (data) {
-      if (data != null && !data.error) {
-        if (/^youtu\.be|(www\.)?youtube\.com$/.test(new window.URL(data.url).hostname)) {
+      if (data != null && !data.error && !this.isFetched(data.url)) {
+        var rYouTube = /^.*(?:youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/
+        if (/^youtu\.be|(www\.)?youtube\.com$/.test(new window.URL(data.url).hostname) && rYouTube.test(data.url)) {
           this.items.push({
             type: 'embed',
             data: data
