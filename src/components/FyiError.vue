@@ -1,6 +1,12 @@
 <template>
-  <div class="fyi-message">
-    <p>{{ message }}</p>
+  <div class="fyi-error">
+    <div class="card card-outline-danger">
+      <div class="card-block">
+        <blockquote class="card-blockquote">
+          <p>{{ message }}</p>
+        </blockquote>
+      </div>
+    </div>
   </div>
 </template>
 
