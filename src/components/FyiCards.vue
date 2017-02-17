@@ -2,7 +2,8 @@
   <div class="fyi-cards">
     <div class="fyi-card" v-for="item in items">
       <fyi-error :message="item.message" v-if=" item.type == 'error' "></fyi-error>
-      <fyi-article :data="item.data" v-else-if=" item.type == 'article' && item.data "></fyi-article>
+      <fyi-article :data="item.data" v-else-if=" item.type == 'article' "></fyi-article>
+      <fyi-embed :data="item.data" v-else-if=" item.type == 'embed' "></fyi-embed>
     </div>
   </div>
 </template>
@@ -11,12 +12,14 @@
 import axios from 'axios'
 import FyiError from './FyiError'
 import FyiArticle from './FyiArticle'
+import FyiEmbed from './FyiEmbed'
 
 export default {
   name: 'fyi-cards',
   components: {
     FyiError,
-    FyiArticle
+    FyiArticle,
+    FyiEmbed
   },
   data () {
     return {
@@ -32,10 +35,7 @@ export default {
             message: 'Sorry, we cannot load content from this page.'
           })
         } else {
-          this.items.push({
-            type: 'article',
-            data: data
-          })
+          this.parseData(data)
           this.fetchAll(data)
         }
       })
@@ -60,7 +60,7 @@ export default {
         url = window.safari.application.activeBrowserWindow.activeTab.url
         callback.call(self, url)
       } else {
-        url = 'http://www.latimes.com/politics/la-na-pol-trump-news-conference-20170216-story.html'
+        url = 'http://kotaku.com/a-17-hour-video-of-a-guy-clicking-his-mouse-one-million-1792454584'
         callback.call(self, url)
       }
     },
@@ -92,14 +92,24 @@ export default {
           url.hash = ''
           if (url.href !== data.url) {
             this.fetchData(url.href, function (data) {
-              if (data) {
-                this.items.push({
-                  type: 'article',
-                  data: data
-                })
-              }
+              this.parseData(data)
             })
           }
+        }
+      }
+    },
+    parseData (data) {
+      if (data != null && !data.error) {
+        if (/^youtu\.be|(www\.)?youtube\.com$/.test(new window.URL(data.url).hostname)) {
+          this.items.push({
+            type: 'embed',
+            data: data
+          })
+        } else {
+          this.items.push({
+            type: 'article',
+            data: data
+          })
         }
       }
     }
@@ -109,4 +119,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.fyi-card {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
 </style>
