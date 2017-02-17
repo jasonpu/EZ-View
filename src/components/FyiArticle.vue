@@ -1,29 +1,17 @@
 <template>
   <div class="fyi-article">
-    <div class="row">
-      <div class="col">
+    <div class="card">
+      <img class="card-img-top" :src="data.lead_image_url" alt="" v-if="data.lead_image_url">
+      <div class="card-block">
         <a :href="data.url" target="_blank">
-          <h1>{{ data.title }}</h1>
+          <h4 class="card-title">{{ data.title }}</h4>
         </a>
+        <p class="card-text">{{ data.excerpt }}</p>
       </div>
-    </div>
-    <div class="row" v-if="data.lead_image_url">
-      <div class="col col-4">
-        <a :href="data.url" target="_blank">
-          <img :src="data.lead_image_url" alt="">
-        </a>
-      </div>
-      <div class="col col-8">
-        <h2>
-          {{ data.excerpt }}
-        </h2>
-      </div>
-    </div>
-    <div class="row" v-else>
-      <div class="col">
-        <h2>
-          {{ data.excerpt }}
-        </h2>
+      <div class="card-block text-right">
+        <a href="#" @click="bookmark" class="card-link"><i class="fa fa-lg fa-bookmark" aria-hidden="true"></i></a>
+        <a :href="facebook_url" target="_blank" class="card-link"><i class="fa fa-lg fa-facebook-official" aria-hidden="true"></i></a>
+        <a :href="twitter_url" target="_blank" class="card-link"><i class="fa fa-lg fa-twitter" aria-hidden="true"></i></a>
       </div>
     </div>
   </div>
@@ -32,7 +20,21 @@
 <script>
 export default {
   name: 'fyi-article',
-  props: ['data']
+  props: ['data'],
+  computed: {
+    facebook_url () {
+      return 'http://facebook.com/sharer.php?u=' + encodeURIComponent(this.data.url)
+    },
+    twitter_url () {
+      return 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(this.data.url)
+    }
+  },
+  methods: {
+    bookmark () {
+      // TODO: bookmark
+      window.alert('TODO: bookmark')
+    }
+  }
 }
 </script>
 
@@ -41,43 +43,10 @@ export default {
 .fyi-article {
   margin-bottom: 1em;
 }
+.card-title-link {
+  color: inherit;
+}
 img {
   max-width: 100%;
-  text-align: center;
-}
-h1, h2 {
-  font-weight: normal;
-}
-h1 {
-  font-weight: bold;
-  margin: 0;
-  font-size: 20px;
-  line-height: 1.1;
-  display: block;
-  margin-bottom: 4px;
-  color: #212325;
-  position: relative
-}
-h2 {
-  line-height: 1.3;
-  font-size: 16px;
-  margin: 0;
-  color: #7a7c7e;
-  display: block
-}
-a {
-  color: #42b983;
-}
-
-button {
-  border: none;
-  width: 2em;
-  padding: 0em;
-  background: #fff;
-  margin-right: 0.5em;
-  cursor: pointer;
-}
-button:last-child {
-  margin-right: 0;
 }
 </style>
