@@ -1,9 +1,18 @@
 <template>
   <div class="fyi-cards">
     <div class="fyi-card" v-for="item in items">
-      <fyi-error :message="item.message" v-if=" item.type == 'error' "></fyi-error>
-      <fyi-article :data="item.data" v-else-if=" item.type == 'article' && item.data "></fyi-article>
-      <fyi-embed :embed="item.embed" :data="item.data" v-else-if=" item.type == 'embed' && item.data && item.embed "></fyi-embed>
+      <fyi-error
+        :message="item.message"
+        v-if=" item.type == 'error' "></fyi-error>
+      <fyi-article
+        :data="item.data"
+        v-else-if=" item.type == 'article' && item.data "
+        v-show=" filter == 'All' || filter == 'Links' "></fyi-article>
+      <fyi-embed
+        :embed="item.embed"
+        :data="item.data"
+        v-else-if=" item.type == 'embed' && item.data && item.embed "
+        v-show=" filter == 'All' || filter == 'Media' "></fyi-embed>
     </div>
   </div>
 </template>
@@ -21,6 +30,7 @@ export default {
     FyiArticle,
     FyiEmbed
   },
+  props: ['filter'],
   data () {
     return {
       items: []
