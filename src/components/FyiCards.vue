@@ -1,5 +1,8 @@
 <template>
   <div class="fyi-cards">
+    <div class="progress" v-if="progress">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+    </div>
     <div class="fyi-card" v-for="item in items">
       <fyi-error
         :message="item.message"
@@ -33,12 +36,15 @@ export default {
   props: ['filter'],
   data () {
     return {
-      items: []
+      items: [],
+      progress: true
     }
   },
   created () {
     this.fetchActiveTabURL(function (url) {
       this.fetchData(url, function (data) {
+        this.progress = false
+
         if (data == null || data.error) {
           this.items.push({
             type: 'error',
