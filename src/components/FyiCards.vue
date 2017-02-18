@@ -2,8 +2,8 @@
   <div class="fyi-cards">
     <div class="fyi-card" v-for="item in items">
       <fyi-error :message="item.message" v-if=" item.type == 'error' "></fyi-error>
-      <fyi-article :data="item.data" v-else-if=" item.type == 'article' "></fyi-article>
-      <fyi-embed :data="item.data" v-else-if=" item.type == 'embed' "></fyi-embed>
+      <fyi-article :data="item.data" v-else-if=" item.type == 'article' && item.data "></fyi-article>
+      <fyi-embed :embed="item.embed" :data="item.data" v-else-if=" item.type == 'embed' && item.data && item.embed "></fyi-embed>
     </div>
   </div>
 </template>
@@ -23,7 +23,6 @@ export default {
   },
   data () {
     return {
-      urls: [],
       items: []
     }
   },
@@ -36,7 +35,6 @@ export default {
             message: 'Sorry, we cannot load content from this page.'
           })
         } else {
-          this.parseData(data)
           this.fetchAll(data)
         }
       })
@@ -67,22 +65,66 @@ export default {
     },
     fetchData (url, callback) {
       var self = this
-      if (this.urls.indexOf(url) < 0) {
-        this.urls.push(url)
-        axios.get('https://mercury.postlight.com/parser?url=' + url, {
-          headers: {
-            'x-api-key': '8CwzdCirC38J5RgE4gVQGym2YFxEVgn92nIHjxnd'
-          }
-        })
-        .then(function (response) {
-          if (callback) {
-            callback.call(self, response.data)
-          }
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
+      for (var i = 0; i < this.items.length; ++i) {
+        if (this.items[i].origin.url === url || (this.items[i].data && this.items[i].data === url)) {
+          return
+        }
       }
+      this.items.push({
+        origin: {
+          url: url
+        }
+      })
+      axios.get('https://mercury.postlight.com/parser?url=' + encodeURIComponent(url), {
+        headers: {
+          'x-api-key': '8CwzdCirC38J5RgE4gVQGym2YFxEVgn92nIHjxnd'
+        }
+      })
+      .then(function (response) {
+        (function () {
+          var data = response.data
+          if (data != null && !data.error) {
+            for (var i = 0; i < this.items.length; ++i) {
+              if (this.items[i].data && this.items[i].data.url === data.url) {
+                return
+              } else if (this.items[i].origin.url === url) {
+                var rYouTubeDomain = /^youtu\.be|(www\.)?youtube\.com$/
+                var rYouTubeVideoID = /^.*(?:youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/
+                var match
+
+                if (rYouTubeDomain.test(new window.URL(data.url).hostname) && (match = rYouTubeVideoID.test(data.url)) != null) {
+                  match[1]
+                  this.items.splice(i, 1, {
+                    origin: {
+                      url: url
+                    },
+                    embed: {
+                      url: 'https://www.youtube.com/embed/' + match[1],
+                      type: 'iframe'
+                    },
+                    type: 'embed',
+                    data: data
+                  })
+                } else {
+                  this.items.splice(i, 1, {
+                    origin: {
+                      url: url
+                    },
+                    type: 'article',
+                    data: data
+                  })
+                }
+              }
+            }
+          }
+          if (callback) {
+            callback.call(this, response.data)
+          }
+        }).call(self)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
     },
     fetchAll (data, callback) {
       var dom = document.createElement('div')
@@ -92,33 +134,7 @@ export default {
         var url = new window.URL(anchors[i].href, data.url)
         if (/^https?:$/.test(url.protocol)) {
           url.hash = ''
-          this.fetchData(url.href, function (data) {
-            this.parseData(data)
-          })
-        }
-      }
-    },
-    isFetched (url) {
-      for (var i = 0; i < this.items.length; ++i) {
-        if (this.items[i].data.url === url) {
-          return true
-        }
-      }
-      return false
-    },
-    parseData (data) {
-      if (data != null && !data.error && !this.isFetched(data.url)) {
-        var rYouTube = /^.*(?:youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/
-        if (/^youtu\.be|(www\.)?youtube\.com$/.test(new window.URL(data.url).hostname) && rYouTube.test(data.url)) {
-          this.items.push({
-            type: 'embed',
-            data: data
-          })
-        } else {
-          this.items.push({
-            type: 'article',
-            data: data
-          })
+          this.fetchData(url.href)
         }
       }
     }

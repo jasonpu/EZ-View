@@ -22,24 +22,7 @@ export default {
   components: {
     FyiCardActions
   },
-  props: ['data'],
-  computed: {
-    embed () {
-      var rYouTube = /^.*(?:youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/
-      var match
-      if ((match = this.data.url.match(rYouTube)) != null) {
-        return {
-          type: 'iframe',
-          url: 'https://www.youtube.com/embed/' + match[1]
-        }
-      } else {
-        return {
-          type: 'unknown',
-          url: null
-        }
-      }
-    }
-  }
+  props: ['data', 'embed']
 }
 </script>
 
