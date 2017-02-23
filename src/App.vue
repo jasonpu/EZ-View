@@ -67,13 +67,7 @@ export default {
   data () {
     return {
       settings: (function () {
-        try {
-          var settings = JSON.parse(window.localStorage.getItem('settings'))
-          if (settings != null) {
-            return settings
-          }
-        } catch (err) {}
-        return {
+        var settings = {
           filter: 'All',
           sharing: {
             bookmark: true,
@@ -81,6 +75,16 @@ export default {
             facebook: true
           }
         }
+        try {
+          var saved = JSON.parse(window.localStorage.getItem('settings'))
+          if (saved != null) {
+            settings.filter = saved.filter
+            for (var service in saved.sharing) {
+              settings.sharing[service] = saved.sharing[service]
+            }
+          }
+        } catch (err) {}
+        return settings
       })(),
       tabs: ['All', 'Links', 'Media'],
       showSettings: false
