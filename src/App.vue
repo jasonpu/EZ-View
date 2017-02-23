@@ -67,6 +67,12 @@ export default {
   data () {
     return {
       settings: (function () {
+        try {
+          var settings = JSON.parse(window.localStorage.getItem('settings'))
+          if (settings != null) {
+            return settings
+          }
+        } catch (err) {}
         return {
           filter: 'All',
           sharing: {
@@ -78,6 +84,14 @@ export default {
       })(),
       tabs: ['All', 'Links', 'Media'],
       showSettings: false
+    }
+  },
+  watch: {
+    settings: {
+      handler: function () {
+        window.localStorage.setItem('settings', JSON.stringify(this.settings))
+      },
+      deep: true
     }
   }
 }
