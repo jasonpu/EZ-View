@@ -4,7 +4,7 @@
       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
     </div>
     <transition-group name="list">
-      <fyi-card :key="item" :data="item.data" :type="item.type" :settings="settings" v-for="item in filter(items)"></fyi-card>
+      <fyi-card :key="item" :origin="item.origin" :data="item.data" :type="item.type" :settings="settings" v-for="item in filter(items)"></fyi-card>
     </transition-group>
   </div>
 </template>
@@ -27,12 +27,13 @@ export default {
   },
   created () {
     this.fetchActiveTabURL(function (url) {
-      this.fetchData(url, function (data) {
+      this.fetchData(url, null, function (data) {
         this.progress = false
 
         if (data == null || data.error) {
           this.items.push({
             type: 'error',
+            origin: null,
             data: {
               message: 'Sorry, we cannot load content from this page.'
             }
@@ -81,7 +82,7 @@ export default {
         callback.call(self, url)
       }
     },
-    fetchData (url, callback) {
+    fetchData (url, context, callback) {
       var self = this
       for (var i = 0; i < this.items.length; ++i) {
         if (this.items[i].origin.url === url || (this.items[i].data && this.items[i].data === url)) {
@@ -90,7 +91,8 @@ export default {
       }
       this.items.push({
         origin: {
-          url: url
+          url: url,
+          context: context
         }
       })
       axios.get('https://mercury.postlight.com/parser?url=' + encodeURIComponent(url), {
@@ -117,18 +119,14 @@ export default {
                     type: 'iframe'
                   }
                   this.items.splice(i, 1, {
-                    origin: {
-                      url: url
-                    },
                     type: 'embed',
+                    origin: this.items[i].origin,
                     data: data
                   })
                 } else {
                   this.items.splice(i, 1, {
-                    origin: {
-                      url: url
-                    },
                     type: 'article',
+                    origin: this.items[i].origin,
                     data: data
                   })
                 }
@@ -152,7 +150,7 @@ export default {
         var url = new window.URL(anchors[i].href, data.url)
         if (/^https?:$/.test(url.protocol)) {
           url.hash = ''
-          this.fetchData(url.href)
+          this.fetchData(url.href, anchors[i].textContent)
         }
       }
     }

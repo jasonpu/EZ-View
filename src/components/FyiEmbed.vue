@@ -1,6 +1,7 @@
 <template>
   <div class="fyi-embed">
     <div class="card">
+      <fyi-card-context :origin="origin" v-if="origin.context && settings.context"></fyi-card-context>
       <div class="embed-responsive embed-responsive-16by9">
         <iframe class="embed-responsive-item" :src="data.embed.url" v-if=" data.embed.type == 'iframe' ">
       </div>
@@ -15,14 +16,16 @@
 <script>
 import FyiCardActions from './FyiCardActions'
 import FyiCardTitle from './FyiCardTitle'
+import FyiCardContext from './FyiCardContext'
 
 export default {
   name: 'fyi-embed',
   components: {
     FyiCardActions,
-    FyiCardTitle
+    FyiCardTitle,
+    FyiCardContext
   },
-  props: ['data', 'settings']
+  props: ['origin', 'data', 'settings']
 }
 </script>
 

@@ -1,7 +1,8 @@
 <template>
   <div class="fyi-article">
     <div class="card">
-      <img class="card-img-top" :src="data.lead_image_url" alt="" v-if="data.lead_image_url">
+      <fyi-card-context :origin="origin" v-if="origin.context && settings.context"></fyi-card-context>
+      <img :class="{ 'card-img-top': !(origin.context && settings.context) }" :src="data.lead_image_url" alt="" v-if="data.lead_image_url">
       <div class="card-block">
         <fyi-card-title :data="data"></fyi-card-title>
         <p class="card-text">{{ data.excerpt }}</p>
@@ -14,14 +15,16 @@
 <script>
 import FyiCardActions from './FyiCardActions'
 import FyiCardTitle from './FyiCardTitle'
+import FyiCardContext from './FyiCardContext'
 
 export default {
   name: 'fyi-article',
   components: {
     FyiCardActions,
-    FyiCardTitle
+    FyiCardTitle,
+    FyiCardContext
   },
-  props: ['data', 'settings']
+  props: ['origin', 'data', 'settings']
 }
 </script>
 

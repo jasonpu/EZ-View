@@ -1,13 +1,13 @@
 <template>
   <div class="fyi-card-actions">
     <div class="text-right">
-      <a href="#" @click="bookmark" class="card-link" v-if="settings.sharing.bookmark">
+      <a href="#" @click="bookmark" class="card-link" v-if="settings.services.bookmark">
         <i class="fa fa-bookmark fa-lg" aria-hidden="true"></i>
       </a>
-      <a :href="twitter_url" target="_blank" class="card-link" v-if="settings.sharing.twitter">
+      <a :href="twitter_url" target="_blank" class="card-link" v-if="settings.services.twitter">
         <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
       </a>
-      <a :href="facebook_url" target="_blank" class="card-link" v-if="settings.sharing.facebook">
+      <a :href="facebook_url" target="_blank" class="card-link" v-if="settings.services.facebook">
         <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>
       </a>
     </div>

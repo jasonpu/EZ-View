@@ -1,8 +1,8 @@
 <template>
   <div class="fyi-card">
     <fyi-error   :data="data" :settings="settings" v-if=" type == 'error' "></fyi-error>
-    <fyi-article :data="data" :settings="settings" v-else-if=" type == 'article' "></fyi-article>
-    <fyi-embed   :data="data" :settings="settings" v-else-if=" type == 'embed' "></fyi-embed>
+    <fyi-article :origin="origin" :data="data" :settings="settings" v-else-if=" type == 'article' "></fyi-article>
+    <fyi-embed   :origin="origin" :data="data" :settings="settings" v-else-if=" type == 'embed' "></fyi-embed>
   </div>
 </template>
 
@@ -18,7 +18,7 @@ export default {
     FyiArticle,
     FyiEmbed
   },
-  props: ['data', 'type', 'settings']
+  props: ['origin', 'data', 'type', 'settings']
 }
 </script>
 

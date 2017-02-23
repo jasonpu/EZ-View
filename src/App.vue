@@ -29,22 +29,31 @@
           <div class="container">
             <form>
               <fieldset class="form-group">
-                <legend>Sharing</legend>
+                <legend>General</legend>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" v-model="settings.sharing.bookmark">
+                    <input class="form-check-input" type="checkbox" v-model="settings.context">
+                    Display Link Context
+                  </label>
+                </div>
+              </fieldset>
+              <fieldset class="form-group">
+                <legend>Services</legend>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" v-model="settings.services.bookmark">
                     Bookmark
                   </label>
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" v-model="settings.sharing.twitter">
+                    <input class="form-check-input" type="checkbox" v-model="settings.services.twitter">
                     Twitter
                   </label>
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" v-model="settings.sharing.facebook">
+                    <input class="form-check-input" type="checkbox" v-model="settings.services.facebook">
                     Facebook
                   </label>
                 </div>
@@ -73,7 +82,8 @@ export default {
       settings: (function () {
         var settings = {
           filter: 'all',
-          sharing: {
+          context: true,
+          services: {
             bookmark: true,
             twitter: true,
             facebook: true
@@ -83,8 +93,8 @@ export default {
           var saved = JSON.parse(window.localStorage.getItem('settings'))
           if (saved != null) {
             settings.filter = saved.filter
-            for (var service in saved.sharing) {
-              settings.sharing[service] = saved.sharing[service]
+            for (var service in saved.services) {
+              settings.services[service] = saved.services[service]
             }
           }
         } catch (err) {}
