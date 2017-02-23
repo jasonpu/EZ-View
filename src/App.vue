@@ -4,13 +4,13 @@
       <div class="fyi-nav clearfix">
         <ul class="nav nav-pills float-left">
           <li class="nav-item" v-for="tab in tabs">
-            <a class="nav-link" href="#" :class="{ active: tab == settings.filter }"
+            <a class="nav-link" href="#" tabindex="-1" :class="{ active: tab == settings.filter }"
                                          @click="settings.filter = tab">{{ tab }}</a>
           </li>
         </ul>
         <ul class="nav nav-pills float-right">
           <li class="nav-item">
-            <a class="nav-link" href="#" :class="{ active: showSettings == true }"
+            <a class="nav-link" href="#" tabindex="-1" :class="{ active: showSettings == true }"
                                          @click="showSettings = !showSettings">Settings</a>
           </li>
         </ul>
