@@ -164,6 +164,6 @@ export default {
   transition-timing-function: ease-in;
 }
 .slide-down-enter, .slide-down-leave-to /* .slide-down-leave-active in <2.1.8 */ {
-  margin-top: -200px; /* must be a number larger than height */
+  margin-top: -300px; /* must be a number larger than height */
 }
 </style>
