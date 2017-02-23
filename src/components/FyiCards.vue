@@ -112,8 +112,7 @@ export default {
                 var rYouTubeVideoID = /^.*(?:youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/
                 var match
 
-                if (rYouTubeDomain.test(new window.URL(data.url).hostname) && (match = rYouTubeVideoID.test(data.url)) != null) {
-                  match[1]
+                if (rYouTubeDomain.test(new window.URL(data.url).hostname) && (match = data.url.match(rYouTubeVideoID)) != null) {
                   data.embed = {
                     url: 'https://www.youtube.com/embed/' + match[1],
                     type: 'iframe'
