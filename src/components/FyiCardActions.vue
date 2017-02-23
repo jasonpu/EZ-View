@@ -1,9 +1,15 @@
 <template>
   <div class="fyi-card-actions">
     <div class="text-right">
-      <a href="#" @click="bookmark" class="card-link"><i class="fa fa-bookmark fa-lg" aria-hidden="true"></i></a>
-      <a :href="facebook_url" target="_blank" class="card-link"><i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i></a>
-      <a :href="twitter_url" target="_blank" class="card-link"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a>
+      <a href="#" @click="bookmark" class="card-link" v-if="settings.sharing.bookmark">
+        <i class="fa fa-bookmark fa-lg" aria-hidden="true"></i>
+      </a>
+      <a :href="twitter_url" target="_blank" class="card-link" v-if="settings.sharing.twitter">
+        <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
+      </a>
+      <a :href="facebook_url" target="_blank" class="card-link" v-if="settings.sharing.facebook">
+        <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>
+      </a>
     </div>
   </div>
 </template>
@@ -11,7 +17,7 @@
 <script>
 export default {
   name: 'fyi-embed',
-  props: ['url'],
+  props: ['url', 'settings'],
   computed: {
     facebook_url () {
       return 'http://facebook.com/sharer.php?u=' + encodeURIComponent(this.url)

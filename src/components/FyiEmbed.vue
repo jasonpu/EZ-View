@@ -2,13 +2,13 @@
   <div class="fyi-embed">
     <div class="card">
       <div class="embed-responsive embed-responsive-16by9">
-        <iframe class="embed-responsive-item" :src="embed.url" v-if=" embed.type == 'iframe' ">
+        <iframe class="embed-responsive-item" :src="data.embed.url" v-if=" data.embed.type == 'iframe' ">
       </div>
       <div class="card-block">
         <a :href="data.url" target="_blank">
           <h4 class="card-title">{{ data.title }}</h4>
         </a>
-        <fyi-card-actions :url="data.url"></fyi-card-actions>
+        <fyi-card-actions :url="data.url" :settings="settings"></fyi-card-actions>
       </div>
     </div>
   </div>
@@ -22,7 +22,7 @@ export default {
   components: {
     FyiCardActions
   },
-  props: ['data', 'embed']
+  props: ['data', 'settings']
 }
 </script>
 

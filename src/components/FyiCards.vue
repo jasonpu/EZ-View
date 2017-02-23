@@ -3,37 +3,22 @@
     <div class="progress" v-if="progress">
       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
     </div>
-    <div class="fyi-card" v-for="item in items">
-      <fyi-error
-        :message="item.message"
-        v-if=" item.type == 'error' "></fyi-error>
-      <fyi-article
-        :data="item.data"
-        v-else-if=" item.type == 'article' && item.data "
-        v-show=" filter == 'All' || filter == 'Links' "></fyi-article>
-      <fyi-embed
-        :embed="item.embed"
-        :data="item.data"
-        v-else-if=" item.type == 'embed' && item.data && item.embed "
-        v-show=" filter == 'All' || filter == 'Media' "></fyi-embed>
-    </div>
+    <transition-group name="list">
+      <fyi-card :key="item" :data="item.data" :type="item.type" :settings="settings" v-for="item in filter(items)"></fyi-card>
+    </transition-group>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import FyiError from './FyiError'
-import FyiArticle from './FyiArticle'
-import FyiEmbed from './FyiEmbed'
+import FyiCard from './FyiCard'
 
 export default {
   name: 'fyi-cards',
   components: {
-    FyiError,
-    FyiArticle,
-    FyiEmbed
+    FyiCard
   },
-  props: ['filter'],
+  props: ['settings'],
   data () {
     return {
       items: [],
@@ -48,7 +33,9 @@ export default {
         if (data == null || data.error) {
           this.items.push({
             type: 'error',
-            message: 'Sorry, we cannot load content from this page.'
+            data: {
+              message: 'Sorry, we cannot load content from this page.'
+            }
           })
         } else {
           this.fetchAll(data)
@@ -57,6 +44,21 @@ export default {
     })
   },
   methods: {
+    filter (items) {
+      var self = this
+      return items.filter(function (item) {
+        if (item.data != null && item.type != null) {
+          if (self.settings.filter === 'All') {
+            return true
+          } else if (self.settings.filter === 'Links' && item.type === 'article') {
+            return true
+          } else if (self.settings.filter === 'Media' && item.type === 'embed') {
+            return true
+          }
+        }
+        return false
+      })
+    },
     fetchActiveTabURL (callback) {
       var self = this
       var url
@@ -110,13 +112,13 @@ export default {
 
                 if (rYouTubeDomain.test(new window.URL(data.url).hostname) && (match = rYouTubeVideoID.test(data.url)) != null) {
                   match[1]
+                  data.embed = {
+                    url: 'https://www.youtube.com/embed/' + match[1],
+                    type: 'iframe'
+                  }
                   this.items.splice(i, 1, {
                     origin: {
                       url: url
-                    },
-                    embed: {
-                      url: 'https://www.youtube.com/embed/' + match[1],
-                      type: 'iframe'
                     },
                     type: 'embed',
                     data: data
@@ -160,8 +162,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.fyi-card {
-  margin-top: 1em;
+.progress {
   margin-bottom: 1em;
+}
+.list-item {
+}
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to {
+  opacity: 0;
 }
 </style>

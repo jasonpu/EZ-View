@@ -7,7 +7,7 @@
           <h4 class="card-title">{{ data.title }}</h4>
         </a>
         <p class="card-text">{{ data.excerpt }}</p>
-        <fyi-card-actions :url="data.url"></fyi-card-actions>
+        <fyi-card-actions :url="data.url" :settings="settings"></fyi-card-actions>
       </div>
     </div>
   </div>
@@ -21,7 +21,7 @@ export default {
   components: {
     FyiCardActions
   },
-  props: ['data']
+  props: ['data', 'settings']
 }
 </script>
 

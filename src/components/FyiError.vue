@@ -3,7 +3,7 @@
     <div class="card card-outline-danger">
       <div class="card-block">
         <blockquote class="card-blockquote">
-          <p>{{ message }}</p>
+          <p>{{ data.message }}</p>
         </blockquote>
       </div>
     </div>
@@ -13,7 +13,7 @@
 <script>
 export default {
   name: 'fyi-message',
-  props: ['message']
+  props: ['data']
 }
 </script>
 
