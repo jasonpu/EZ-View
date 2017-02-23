@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'fyi-message',
+  name: 'fyi-error',
   props: ['data']
 }
 </script>

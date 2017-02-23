@@ -12,7 +12,7 @@ import FyiArticle from './FyiArticle'
 import FyiEmbed from './FyiEmbed'
 
 export default {
-  name: 'fyi-cards',
+  name: 'fyi-card',
   components: {
     FyiError,
     FyiArticle,

@@ -3,9 +3,7 @@
     <div class="card">
       <img class="card-img-top" :src="data.lead_image_url" alt="" v-if="data.lead_image_url">
       <div class="card-block">
-        <a :href="data.url" target="_blank">
-          <h4 class="card-title">{{ data.title }}</h4>
-        </a>
+        <fyi-card-title :data="data"></fyi-card-title>
         <p class="card-text">{{ data.excerpt }}</p>
         <fyi-card-actions :url="data.url" :settings="settings"></fyi-card-actions>
       </div>
@@ -15,11 +13,13 @@
 
 <script>
 import FyiCardActions from './FyiCardActions'
+import FyiCardTitle from './FyiCardTitle'
 
 export default {
   name: 'fyi-article',
   components: {
-    FyiCardActions
+    FyiCardActions,
+    FyiCardTitle
   },
   props: ['data', 'settings']
 }
@@ -29,9 +29,6 @@ export default {
 <style scoped>
 .fyi-article {
   margin-bottom: 1em;
-}
-.card-title-link {
-  color: inherit;
 }
 img {
   max-width: 100%;

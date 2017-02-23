@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: 'fyi-embed',
+  name: 'fyi-card-actions',
   props: ['url', 'settings'],
   computed: {
     facebook_url () {
