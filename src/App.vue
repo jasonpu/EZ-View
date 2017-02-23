@@ -4,14 +4,18 @@
       <div class="fyi-nav clearfix">
         <ul class="nav nav-pills float-left">
           <li class="nav-item" v-for="tab in tabs">
-            <a class="nav-link" href="#" tabindex="-1" :class="{ active: tab == settings.filter }"
-                                         @click="settings.filter = tab">{{ tab }}</a>
+            <a class="nav-link" href="#" tabindex="-1" :class="{ active: tab.filter == settings.filter }"
+                                         @click="settings.filter = tab.filter ">
+              <i class="fa" :class="tab.icon" aria-hidden="true"></i>
+            </a>
           </li>
         </ul>
         <ul class="nav nav-pills float-right">
           <li class="nav-item">
             <a class="nav-link" href="#" tabindex="-1" :class="{ active: showSettings == true }"
-                                         @click="showSettings = !showSettings">Settings</a>
+                                         @click="showSettings = !showSettings">
+              <i class="fa fa-bars" aria-hidden="true"></i>
+            </a>
           </li>
         </ul>
       </div>
@@ -68,7 +72,7 @@ export default {
     return {
       settings: (function () {
         var settings = {
-          filter: 'All',
+          filter: 'all',
           sharing: {
             bookmark: true,
             twitter: true,
@@ -86,7 +90,16 @@ export default {
         } catch (err) {}
         return settings
       })(),
-      tabs: ['All', 'Links', 'Media'],
+      tabs: [{
+        filter: 'all',
+        icon: 'fa-globe'
+      }, {
+        filter: 'article',
+        icon: 'fa-link'
+      }, {
+        filter: 'embed',
+        icon: 'fa-film'
+      }],
       showSettings: false
     }
   },

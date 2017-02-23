@@ -48,11 +48,11 @@ export default {
       var self = this
       return items.filter(function (item) {
         if (item.data != null && item.type != null) {
-          if (self.settings.filter === 'All') {
+          if (self.settings.filter === 'all') {
             return true
-          } else if (self.settings.filter === 'Links' && item.type === 'article') {
+          } else if (self.settings.filter === 'article' && item.type === 'article') {
             return true
-          } else if (self.settings.filter === 'Media' && item.type === 'embed') {
+          } else if (self.settings.filter === 'embed' && item.type === 'embed') {
             return true
           }
         }
