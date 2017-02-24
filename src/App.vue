@@ -1,67 +1,69 @@
 <template>
   <div id="app">
-    <div class="container">
-      <div class="fyi-nav clearfix">
-        <ul class="nav nav-pills float-left">
-          <li class="nav-item" v-for="tab in tabs">
-            <a class="nav-link" href="#" tabindex="-1" :class="{ active: tab.filter == settings.filter }"
-                                         @click="settings.filter = tab.filter ">
-              <i class="fa" :class="tab.icon" aria-hidden="true"></i>
-            </a>
-          </li>
-        </ul>
-        <ul class="nav nav-pills float-right">
-          <li class="nav-item">
-            <a class="nav-link" href="#" tabindex="-1" :class="{ active: showSettings == true }"
-                                         @click="showSettings = !showSettings">
-              <i class="fa fa-bars" aria-hidden="true"></i>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="fyi-settings">
-      <transition name="fade">
-        <div class="inset-shadow-top" v-if="showSettings"></div>
-      </transition>
-      <transition name="slide-down">
-        <div class="inset-shadow-bottom" v-if="showSettings">
-          <div class="container">
-            <form>
-              <fieldset class="form-group">
-                <legend>General</legend>
-                <div class="form-check">
-                  <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" v-model="settings.context">
-                    Display Link Context
-                  </label>
-                </div>
-              </fieldset>
-              <fieldset class="form-group">
-                <legend>Services</legend>
-                <div class="form-check">
-                  <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" v-model="settings.services.bookmark">
-                    Bookmark
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" v-model="settings.services.twitter">
-                    Twitter
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" v-model="settings.services.facebook">
-                    Facebook
-                  </label>
-                </div>
-              </fieldset>
-            </form>
-          </div>
+    <div class="fyi-header sticky-top">
+      <div class="fyi-nav">
+        <div class="container clearfix">
+          <ul class="nav nav-pills float-left">
+            <li class="nav-item" v-for="tab in tabs">
+              <a class="nav-link" href="#" tabindex="-1" :class="{ active: tab.filter == settings.filter }"
+                                          @click="settings.filter = tab.filter ">
+                <i class="fa" :class="tab.icon" aria-hidden="true"></i>
+              </a>
+            </li>
+          </ul>
+          <ul class="nav nav-pills float-right">
+            <li class="nav-item">
+              <a class="nav-link" href="#" tabindex="-1" :class="{ active: showSettings == true }"
+                                          @click="showSettings = !showSettings">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+              </a>
+            </li>
+          </ul>
         </div>
-      </transition>
+      </div>
+      <div class="fyi-settings">
+        <transition name="fade">
+          <div class="inset-shadow-top" v-if="showSettings"></div>
+        </transition>
+        <transition name="slide-down">
+          <div class="inset-shadow-bottom" v-if="showSettings">
+            <div class="container">
+              <form>
+                <fieldset class="form-group">
+                  <legend>General</legend>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" v-model="settings.context">
+                      Display Link Context
+                    </label>
+                  </div>
+                </fieldset>
+                <fieldset class="form-group">
+                  <legend>Services</legend>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" v-model="settings.services.bookmark">
+                      Bookmark
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" v-model="settings.services.twitter">
+                      Twitter
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" v-model="settings.services.facebook">
+                      Facebook
+                    </label>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        </transition>
+      </div>
     </div>
     <div class="container-fluid">
       <fyi-cards :settings="settings"></fyi-cards>
@@ -128,18 +130,20 @@ export default {
 #app {
   width: 30em;
 }
-.fyi-nav {
-  margin-top: 1em;
-  margin-bottom: 1em;
+.fyi-header {
+  padding-top: 1em;
   background: #fff;
+}
+.fyi-nav {
+  padding-bottom: 1em;
 }
 .fyi-settings {
   overflow: hidden;
 }
 .fyi-settings .container {
+  margin-bottom: 1em;
   padding-top: 1em;
   padding-bottom: 1em;
-  margin-bottom: 1em;
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
