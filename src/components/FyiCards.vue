@@ -105,9 +105,9 @@ export default {
         (function () {
           var data = response.data
 
-          data.url = new window.URL(data.url, url).href // normalize broken URLs
-
           if (data != null && !data.error) {
+            data.url = new window.URL(data.url, url).href // normalize broken URLs
+
             for (var i = 0; i < this.items.length; ++i) {
               if (this.items[i].data && this.items[i].data.url === data.url) {
                 return
