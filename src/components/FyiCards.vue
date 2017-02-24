@@ -11,6 +11,7 @@
 
 <script>
 import axios from 'axios'
+import getVideoID from 'get-video-id'
 import FyiCard from './FyiCard'
 
 export default {
@@ -103,19 +104,42 @@ export default {
       .then(function (response) {
         (function () {
           var data = response.data
+
+          data.url = new window.URL(data.url, url).href // normalize broken URLs
+
           if (data != null && !data.error) {
             for (var i = 0; i < this.items.length; ++i) {
               if (this.items[i].data && this.items[i].data.url === data.url) {
                 return
               } else if (this.items[i].origin.url === url) {
-                var rYouTubeDomain = /^youtu\.be|(www\.)?youtube\.com$/
-                var rYouTubeVideoID = /^.*(?:youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/
-                var match
+                var video
 
-                if (rYouTubeDomain.test(new window.URL(data.url).hostname) && (match = data.url.match(rYouTubeVideoID)) != null) {
-                  data.embed = {
-                    url: 'https://www.youtube.com/embed/' + match[1],
-                    type: 'iframe'
+                if ((video = getVideoID(data.url)) != null && video.id != null) {
+                  switch (video.service) {
+                    case 'youtube':
+                      data.embed = {
+                        url: 'https://www.youtube.com/embed/' + video.id,
+                        type: 'iframe'
+                      }
+                      break
+                    case 'vimeo':
+                      data.embed = {
+                        url: 'https://player.vimeo.com/video/' + video.id,
+                        type: 'iframe'
+                      }
+                      break
+                    case 'vine':
+                      data.embed = {
+                        url: 'https://vine.co/v/' + video.id + '/embed/simple',
+                        type: 'iframe'
+                      }
+                      break
+                    case 'videopress':
+                      data.embed = {
+                        url: 'https://videopress.com/embed/' + video.id,
+                        type: 'iframe'
+                      }
+                      break
                   }
                   this.items.splice(i, 1, {
                     type: 'embed',
@@ -133,7 +157,7 @@ export default {
             }
           }
           if (callback) {
-            callback.call(this, response.data)
+            callback.call(this, data)
           }
         }).call(self)
       })
