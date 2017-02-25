@@ -4,7 +4,7 @@
       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
     </div>
     <transition-group name="list">
-      <fyi-card :key="item" :origin="item.origin" :data="item.data" :type="item.type" :settings="settings" v-for="item in filter(items)"></fyi-card>
+      <fyi-card :key="item" :origin="item.origin" :data="item.data" :type="item.type" :settings="settings" v-for="item in filter()"></fyi-card>
     </transition-group>
   </div>
 </template>
@@ -46,9 +46,9 @@ export default {
     })
   },
   methods: {
-    filter (items) {
+    filter () {
       var self = this
-      return items.filter(function (item) {
+      return this.items.filter(function (item) {
         if (item.data != null && item.type != null) {
           if (self.settings.filter === 'all') {
             return true
