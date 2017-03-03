@@ -6,7 +6,7 @@
       <div class="card-block">
         <fyi-card-title :data="data"></fyi-card-title>
         <p class="card-text">{{ data.excerpt }}</p>
-        <fyi-card-actions :url="data.url" :settings="settings"></fyi-card-actions>
+        <fyi-card-actions type="article" :origin="origin" :data="data" :settings="settings"></fyi-card-actions>
       </div>
     </div>
   </div>

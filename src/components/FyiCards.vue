@@ -46,7 +46,19 @@ export default {
     })
   },
   methods: {
+    pinned () {
+      try {
+        var pinned = JSON.parse(window.localStorage.getItem('pinned'))
+        if (pinned != null) {
+          return pinned
+        }
+      } catch (err) {}
+      return []
+    },
     filter () {
+      if (this.settings.filter === 'pin') {
+        return this.pinned()
+      }
       var self = this
       return this.items.filter(function (item) {
         if (item.data != null && item.type != null) {

@@ -7,7 +7,7 @@
       </div>
       <div class="card-block">
         <fyi-card-title :data="data"></fyi-card-title>
-        <fyi-card-actions :url="data.url" :settings="settings"></fyi-card-actions>
+        <fyi-card-actions type="embed" :origin="origin" :data="data" :settings="settings"></fyi-card-actions>
       </div>
     </div>
   </div>

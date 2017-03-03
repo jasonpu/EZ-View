@@ -111,6 +111,9 @@ export default {
       }, {
         filter: 'embed',
         icon: 'fa-film'
+      }, {
+        filter: 'pin',
+        icon: 'fa-bookmark'
       }],
       showSettings: false
     }
