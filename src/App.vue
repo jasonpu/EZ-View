@@ -6,7 +6,7 @@
           <ul class="nav nav-pills float-left">
             <li class="nav-item" v-for="tab in tabs">
               <a class="nav-link" href="#" tabindex="-1" :class="{ active: tab.filter == settings.filter }"
-                                          @click="settings.filter = tab.filter ">
+                                          @click="settings.filter = tab.filter " v-show="!(tab.filter == 'pin' && !settings.services.bookmark)">
                 <i class="fa" :class="tab.icon" aria-hidden="true"></i>
               </a>
             </li>
